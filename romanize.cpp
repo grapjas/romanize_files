@@ -8,6 +8,7 @@ string textToRoman(string);
 void convertFileToRoman(string, string);
 bool isDigit(char);
 bool doesFileExist(string);
+void inputCheck(string, string);
 
 int main(int argc, char **argv)
 {
@@ -25,6 +26,12 @@ int main(int argc, char **argv)
 		output_file = argv[2];
 	}
 
+	inputCheck(input_file, output_file);
+	convertFileToRoman(input_file, output_file);
+}
+
+void inputCheck(string input_file, string output_file)
+{
 	if (!doesFileExist(input_file))
 	{
 		cout << "File " << input_file << " doesn't exit.\n";
@@ -45,8 +52,6 @@ int main(int argc, char **argv)
 			exit(1);
 		}
 	}
-
-	convertFileToRoman(input_file, output_file);
 }
 
 void convertFileToRoman(string input_file, string output_file)
