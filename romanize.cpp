@@ -33,13 +33,15 @@ int main(int argc, char **argv)
 
 	if (doesFileExist(output_file))
 	{
-		char yn;
+		char yesno;
 		cout << "File " << output_file << " will be overwritten."
 			 << " Are you sure? (y/n)\n";
-		cin >> yn;
-		if (yn == 'n' || yn == 'N')
+		cin >> yesno;
+		if (yesno == 'y' || yesno == 'Y')
+			;
+		else 
 		{
-			cout << "Program will stop.\n";
+			cout << "Program will stop, you didn't enter y.\n";
 			exit(1);
 		}
 	}
