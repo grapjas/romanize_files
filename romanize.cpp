@@ -1,7 +1,9 @@
 #include "std_lib_facilities.h"
 
-// https://www.cprogramming.com/tutorial/lesson14.html
+// how to use files
 // http://www.cplusplus.com/doc/tutorial/files/
+// how to use command line parameters
+// http://www.cplusplus.com/articles/DEN36Up4/ 
 
 string numeralToRoman(int);
 string textToRoman(string);
@@ -9,25 +11,57 @@ void convertFileToRoman(string, string);
 bool isDigit(char);
 bool doesFileExist(string);
 void inputCheck(string, string);
+void showUsage(string);
 
 int main(int argc, char **argv)
 {
-	string input_file {""};
-	string output_file {""};
+	string input_file{""};
+	string output_file{""};
 
-	if (argc != 3)
+	if (argc != 5)
 	{
-		cout << "usage: " << argv[0] << " <inputfile> <outputfile>\n";
+		showUsage(argv[0]);
 		exit(1);
 	}
-	else 
+
+	for (int i = 1; i < argc; ++i)
 	{
-		input_file = argv[1];
-		output_file = argv[2];
+		string arg = argv[i];
+		if (arg == "-i" || arg == "--in")
+		{
+			if (i + 1 < argc)
+				input_file = argv[i+1];
+			else 
+			{
+				showUsage(argv[0]);
+				exit(1);
+			}
+		}
+		else if (arg == "-o" || arg == "--out")
+		{
+			if (i + 1 < argc)
+				output_file = argv[i+1];
+			else 
+			{
+				showUsage(argv[0]);
+				exit(1);
+			}
+		}
+		else if (arg == "-h" || arg == "--help")
+		{
+			showUsage(argv[0]);
+			exit(1);
+		}
 	}
 
 	inputCheck(input_file, output_file);
 	convertFileToRoman(input_file, output_file);
+}
+
+void showUsage(string name)
+{
+	cout << "Usage: " << name << " -i <file> -o <file>\n"
+		 << "or:    " << name << " --in <file> --out <file>\n";
 }
 
 void inputCheck(string input_file, string output_file)
@@ -46,7 +80,7 @@ void inputCheck(string input_file, string output_file)
 		cin >> yesno;
 		if (yesno == 'y' || yesno == 'Y')
 			;
-		else 
+		else
 		{
 			cout << "Program will stop, you didn't enter y.\n";
 			exit(1);
@@ -56,30 +90,30 @@ void inputCheck(string input_file, string output_file)
 
 void convertFileToRoman(string input_file, string output_file)
 {
-	string output_text {""};
+	string output_text{""};
 
 	string line;
-	ifstream fileDigits (input_file);
+	ifstream fileDigits(input_file);
 	if (fileDigits.is_open())
 	{
-		while (getline (fileDigits, line))
+		while (getline(fileDigits, line))
 		{
 			output_text += textToRoman(line) + '\n';
 		}
 		fileDigits.close();
 	}
-	else 
+	else
 	{
 		cout << "Unable to open file " << input_file << '\n';
 	}
 
-	ofstream fileRoman (output_file);
+	ofstream fileRoman(output_file);
 	if (fileRoman.is_open())
 	{
 		fileRoman << output_text;
 		fileRoman.close();
 	}
-	else 
+	else
 	{
 		cout << "Unable to open file " << output_file << '\n';
 	}
@@ -91,7 +125,7 @@ bool doesFileExist(string filename)
 	name.open(filename);
 	if (name)
 		return true;
-	else 
+	else
 		return false;
 }
 
@@ -103,7 +137,7 @@ string textToRoman(string text)
 	{
 		if (isDigit(text[i]))
 		{
-			string number {""};
+			string number{""};
 			while (isDigit(text[i]))
 			{
 				number += text[i];
@@ -115,7 +149,7 @@ string textToRoman(string text)
 		else
 		{
 			textRoman += text[i];
-		} 
+		}
 	}
 	return textRoman;
 }
@@ -125,28 +159,26 @@ bool isDigit(char a)
 	return (a >= '0' && a <= '9');
 }
 
-
-
 string numeralToRoman(int number)
 {
-	const vector <string> romans = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-	const vector <int> numerals = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-    string roman;
+	const vector<string> romans = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+	const vector<int> numerals = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+	string roman;
 
-    int i = 0;
+	int i = 0;
 
-    while (number > 0 && i < numerals.size())
-    {
-        if (number >= numerals[i])
-        {
-            roman += romans[i];
-            number -= numerals[i];
-        }
-        else
-        {
-            i++;
-        }
-    }
+	while (number > 0 && i < numerals.size())
+	{
+		if (number >= numerals[i])
+		{
+			roman += romans[i];
+			number -= numerals[i];
+		}
+		else
+		{
+			i++;
+		}
+	}
 
-    return roman;
+	return roman;
 }
