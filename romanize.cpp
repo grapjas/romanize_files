@@ -124,9 +124,15 @@ bool doesFileExist(string filename)
 	ifstream name;
 	name.open(filename);
 	if (name)
+	{
+		name.close();
 		return true;
+	}
 	else
+	{
+		name.close();
 		return false;
+	}
 }
 
 string textToRoman(string text)
