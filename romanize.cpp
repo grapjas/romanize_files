@@ -64,27 +64,35 @@ void showUsage(string name)
 		 << "or:    " << name << " --in <file> --out <file>\n";
 }
 
+// Check if input file and output file exists.
+// [y/n] warning prompt if output file exists because the file will be overwritten
 void inputCheck(string input_file, string output_file)
 {
 	if (!doesFileExist(input_file))
 	{
-		cout << "File " << input_file << " doesn't exit.\n";
+		cout << "File " << input_file << " doesn't exist.\n";
 		exit(1);
 	}
-
+	
 	if (doesFileExist(output_file))
 	{
 		char yesno;
 		cout << "File " << output_file << " will be overwritten."
-			 << " Are you sure? (y/n)\n";
+			 << " Are you sure? [y/n]\n";
 		cin >> yesno;
-		if (yesno == 'y' || yesno == 'Y')
-			;
+
+		if (yesno == 'y' || yesno == 'Y');
 		else
 		{
-			cout << "Program will stop, you didn't enter y.\n";
+			cout << "File " << output_file << " won't be overwritten."
+				 << " Program will exit.\n";
 			exit(1);
 		}
+	}
+	else 
+	{
+		cout << "File " << output_file << " doesn't exist.\n";
+		exit(1);
 	}
 }
 
